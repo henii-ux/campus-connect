@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusConnect - Student Networking & Event Management</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#4F46E5',secondary:'#10B981'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        html {
+            scroll-behavior: smooth;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            overflow-x: hidden;
+        }
+        .hero-section {
+            background-image: url('https://readdy.ai/api/search-image?query=modern%20university%20campus%20with%20diverse%20students%20walking%20and%20socializing%2C%20bright%20sunlight%2C%20blurred%20background%2C%20soft%20gradient%20on%20the%20left%20side%20for%20text%20overlay%2C%20professional%20photography%2C%20high%20resolution%2C%20clean%20modern%20aesthetic&width=1920&height=1080&seq=hero1&orientation=landscape');
+            background-size: cover;
+            background-position: center;
+        }
+        .hero-overlay {
+            background: linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0.5) 100%);
+        }
+        .event-container::-webkit-scrollbar {
+            height: 6px;
+        }
+        .event-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .event-container::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 10px;
+        }
+        .event-container::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #4F46E5;
+        }
+        input[type="checkbox"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #d1d5db;
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+        }
+        input[type="checkbox"]:checked {
+            background-color: #4F46E5;
+            border-color: #4F46E5;
+        }
+        input[type="checkbox"]:checked::after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 5px;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        .tab-active {
+            color: #4F46E5;
+            border-bottom: 2px solid #4F46E5;
+        }
+        .custom-switch {
+            width: 44px;
+            height: 22px;
+            border-radius: 999px;
+            background-color: #d1d5db;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .custom-switch.active {
+            background-color: #4F46E5;
+        }
+        .custom-switch::after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: white;
+            transition: transform 0.3s;
+        }
+        .custom-switch.active::after {
+            transform: translateX(22px);
+        }
+        /* Dark Mode Styles */
+        .dark {
+            color-scheme: dark;
+        }
+        .dark body {
+            background-color: #1a1a1a;
+            color: #e5e5e5;
+        }
+        .dark .bg-white {
+            background-color: #23272f !important;
+        }
+        .dark .bg-gray-50 {
+            background-color: #181a20 !important;
+        }
+        .dark .bg-gray-100 {
+            background-color: #23272f !important;
+        }
+        .dark .text-gray-900,
+        .dark .text-gray-800 {
+            color: #e5e5e5 !important;
+        }
+        .dark .text-gray-700 {
+            color: #bdbdbd !important;
+        }
+        .dark .text-gray-600 {
+            color: #a3a3a3 !important;
+        }
+        .dark .text-gray-500 {
+            color: #737373 !important;
+        }
+        .dark .text-gray-400 {
+            color: #a3a3a3 !important;
+        }
+        .dark .border-gray-300 {
+            border-color: #404040 !important;
+        }
+        .dark .border-gray-800 {
+            border-color: #23272f !important;
+        }
+        .dark .hover\:bg-gray-50:hover {
+            background-color: #23272f !important;
+        }
+        .dark .hero-overlay {
+            background: linear-gradient(90deg, rgba(26,26,26,0.95) 0%, rgba(26,26,26,0.9) 50%, rgba(26,26,26,0.5) 100%);
+        }
+        .dark input, .dark textarea, .dark select {
+            background-color: #23272f;
+            color: #e5e5e5;
+        }
+        .dark .bg-primary {
+            background-color: #6366f1 !important;
+        }
+        .dark .bg-gray-800 {
+            background-color: #181a20 !important;
+        }
+        .dark .hover\:text-primary:hover {
+            color: #6366f1 !important;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-800">
+    <script>
+        // Authentication check
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+        const userType = localStorage.getItem('userType');
+
+        // If not logged in, redirect to login page
+        if (!isLoggedIn) {
+            window.location.href = 'login.html';
+        }
+
+        // If admin is logged in, redirect to admin page
+        if (userType === 'admin') {
+            window.location.href = 'admin.html';
+        }
+    </script>
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white shadow-sm z-50">
+        <div class="container mx-auto px-6 py-3 flex items-center justify-between">
+            <a href="#" class="font-['Pacifico'] text-2xl text-primary">CampusConnect</a>
+            
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="text-gray-700 hover:text-primary transition-colors">About</a>
+                <a href="#events" class="text-gray-700 hover:text-primary transition-colors">Events</a>
+                <a href="#discussions" class="text-gray-700 hover:text-primary transition-colors">Discussions</a>
+                <a href="#resources" class="text-gray-700 hover:text-primary transition-colors">Resources</a>
+                <button id="profile-btn" class="text-gray-700 hover:text-primary transition-colors">Profile</button>
+                <button id="logout-btn" class="text-gray-700 hover:text-primary transition-colors">Logout</button>
+                <button id="theme-toggle" class="text-gray-700 hover:text-primary transition-colors" title="Toggle dark mode">
+                    <i class="ri-sun-line ri-lg"></i>
+                </button>
+            </div>
+            
+            <button class="md:hidden w-10 h-10 flex items-center justify-center">
+                <i class="ri-menu-line ri-lg"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section min-h-screen flex items-center">
+        <div class="hero-overlay w-full min-h-screen flex items-center">
+            <div class="container mx-auto px-6 py-20 md:py-28 flex flex-col md:flex-row items-center">
+                <div class="w-full md:w-1/2 text-center md:text-left mb-12 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-gray-900">Connect. Collaborate. Succeed.</h1>
+                    <p class="text-xl md:text-2xl text-gray-700 mb-6">The ultimate platform for students to network, discover events, and share resources on campus.</p>
+                    <p class="text-gray-600 mb-8 max-w-lg">Join thousands of students already using CampusConnect to enhance their college experience and build meaningful connections.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                        <a href="#about" class="bg-primary text-white px-8 py-3 !rounded-button hover:bg-opacity-90 transition-all text-center whitespace-nowrap">Learn More</a>
+                        <a href="#events" class="border border-gray-300 px-8 py-3 !rounded-button hover:bg-gray-50 transition-all text-center whitespace-nowrap">View Events</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">What is CampusConnect?</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Your all-in-one platform for campus life, designed to help students connect, collaborate, and make the most of their university experience.</p>
+            </div>
+            
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="w-full md:w-1/2">
+                    <img src="https://readdy.ai/api/search-image?query=diverse%20group%20of%20students%20collaborating%20in%20a%20modern%20university%20setting%2C%20using%20laptops%20and%20mobile%20devices%2C%20bright%20natural%20lighting%2C%20casual%20environment%2C%20professional%20photography%2C%20high%20resolution&width=600&height=500&seq=about1&orientation=landscape" alt="Students collaborating" class="rounded-lg shadow-lg w-full object-cover">
+                </div>
+                
+                <div class="w-full md:w-1/2">
+                    <div class="grid grid-cols-1 gap-8">
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 flex items-center justify-center bg-primary bg-opacity-10 rounded-full shrink-0">
+                                <i class="ri-calendar-event-line ri-lg text-primary"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2">Event Discovery</h3>
+                                <p class="text-gray-600">Find and join campus events, workshops, and social gatherings tailored to your interests.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 flex items-center justify-center bg-primary bg-opacity-10 rounded-full shrink-0">
+                                <i class="ri-discuss-line ri-lg text-primary"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2">Discussion Forums</h3>
+                                <p class="text-gray-600">Engage in meaningful conversations with peers about academics, campus life, and shared interests.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 flex items-center justify-center bg-primary bg-opacity-10 rounded-full shrink-0">
+                                <i class="ri-folder-download-line ri-lg text-primary"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2">Resource Sharing</h3>
+                                <p class="text-gray-600">Access and share study materials, notes, and academic resources with your classmates.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex gap-4">
+                            <div class="w-12 h-12 flex items-center justify-center bg-primary bg-opacity-10 rounded-full shrink-0">
+                                <i class="ri-team-line ri-lg text-primary"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2">Networking</h3>
+                                <p class="text-gray-600">Build your professional network with students, alumni, and faculty members.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Events Section -->
+    <section id="events" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center mb-12">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2">Events</h2>
+                    <p class="text-gray-600">Discover what's happening on campus and never miss out.</p>
+                </div>
+            </div>
+            <!-- Event Type Tabs -->
+            <div class="flex justify-center mb-8">
+                <div class="inline-flex bg-gray-100 rounded-full p-1">
+                    <button class="event-type-tab px-6 py-2 rounded-full tab-active whitespace-nowrap" data-type="live">Live Events</button>
+                    <button class="event-type-tab px-6 py-2 rounded-full whitespace-nowrap" data-type="upcoming">Upcoming Events</button>
+                </div>
+            </div>
+            <!-- Events Grid -->
+            <div class="event-container flex overflow-x-auto gap-6 pb-4 -mx-2 px-2">
+                <!-- Live Event Card Example -->
+                <div class="event-card min-w-[300px] max-w-[300px] bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-transform hover:translate-y-[-5px]" data-type="live" data-event-id="live-event-1">
+                    <img src="https://readdy.ai/api/search-image?query=tech%20workshop%20with%20students%20in%20a%20modern%20classroom%20setting%2C%20people%20working%20on%20laptops%2C%20collaborative%20environment%2C%20professional%20photography&width=300&height=200&seq=event1&orientation=landscape" alt="Tech Workshop" class="h-40 w-full object-cover">
+                    <div class="p-5 flex flex-col flex-grow">
+                        <div class="flex items-center text-sm text-gray-500 mb-2">
+                            <span class="flex items-center mr-4">
+                                <i class="ri-calendar-line mr-1"></i>
+                                May 16, 2025
+                            </span>
+                            <span class="flex items-center">
+                                <i class="ri-map-pin-line mr-1"></i>
+                                Tech Center
+                            </span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Web Development Workshop</h3>
+                        <p class="text-gray-600 mb-4 flex-grow">Learn the fundamentals of modern web development with hands-on exercises and expert guidance.</p>
+                        <button class="event-join-btn bg-primary text-white px-4 py-2 !rounded-button hover:bg-opacity-90 transition-all whitespace-nowrap">Join Event</button>
+                    </div>
+                </div>
+                <!-- Upcoming Event Card Example -->
+                <div class="event-card min-w-[300px] max-w-[300px] bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-transform hover:translate-y-[-5px]" data-type="upcoming">
+                    <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80" alt="Spring Music Festival" class="h-40 w-full object-cover">
+                    <div class="p-5 flex flex-col flex-grow">
+                        <div class="flex items-center text-sm text-gray-500 mb-2">
+                            <span class="flex items-center mr-4">
+                                <i class="ri-calendar-line mr-1"></i>
+                                May 25, 2025
+                            </span>
+                            <span class="flex items-center">
+                                <i class="ri-map-pin-line mr-1"></i>
+                                Campus Green
+                            </span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Spring Music Festival</h3>
+                        <p class="text-gray-600 mb-4 flex-grow">Celebrate the end of the semester with live music, food, and activities at our annual spring festival.</p>
+                        <button class="bg-primary text-white px-4 py-2 !rounded-button hover:bg-opacity-90 transition-all whitespace-nowrap">Register Now</button>
+                    </div>
+                </div>
+                <div class="event-card min-w-[300px] max-w-[300px] bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-transform hover:translate-y-[-5px]" data-type="upcoming">
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="Undergraduate Research Symposium" class="h-40 w-full object-cover">
+                    <div class="p-5 flex flex-col flex-grow">
+                        <div class="flex items-center text-sm text-gray-500 mb-2">
+                            <span class="flex items-center mr-4">
+                                <i class="ri-calendar-line mr-1"></i>
+                                June 2, 2025
+                            </span>
+                            <span class="flex items-center">
+                                <i class="ri-map-pin-line mr-1"></i>
+                                Science Building
+                            </span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Undergraduate Research Symposium</h3>
+                        <p class="text-gray-600 mb-4 flex-grow">Showcase your research projects and discover the innovative work of your peers across disciplines.</p>
+                        <button class="bg-primary text-white px-4 py-2 !rounded-button hover:bg-opacity-90 transition-all whitespace-nowrap">Register Now</button>
+                    </div>
+                </div>
+                <div class="event-card min-w-[300px] max-w-[300px] bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-transform hover:translate-y-[-5px]" data-type="upcoming">
+                    <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80" alt="Campus Volunteer Day" class="h-40 w-full object-cover">
+                    <div class="p-5 flex flex-col flex-grow">
+                        <div class="flex items-center text-sm text-gray-500 mb-2">
+                            <span class="flex items-center mr-4">
+                                <i class="ri-calendar-line mr-1"></i>
+                                June 8, 2025
+                            </span>
+                            <span class="flex items-center">
+                                <i class="ri-map-pin-line mr-1"></i>
+                                Multiple Locations
+                            </span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Campus Volunteer Day</h3>
+                        <p class="text-gray-600 mb-4 flex-grow">Join fellow students in giving back to the community through various service projects around campus.</p>
+                        <button class="bg-primary text-white px-4 py-2 !rounded-button hover:bg-opacity-90 transition-all whitespace-nowrap">Register Now</button>
+                    </div>
+                </div>
+                <!-- Add more event cards as needed, with data-type="live" or data-type="upcoming" -->
+            </div>
+            <div class="text-center mt-10">
+                <a href="#" class="inline-flex items-center text-primary hover:text-primary-dark font-medium">
+                    View All Events
+                    <i class="ri-arrow-right-line ml-1"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Discussion Forum Section -->
+    <section id="discussions" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-2">Trending Discussions</h2>
+                <p class="text-gray-600">Join the conversation and connect with your peers.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Discussion Card 1 -->
+                <div class="bg-white rounded-lg shadow-md p-6 transition-transform hover:translate-y-[-5px]">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center mr-3">JD</div>
+                            <div>
+                                <h4 class="font-medium">James Davidson</h4>
+                                <p class="text-sm text-gray-500">Computer Science • 2 hours ago</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center text-gray-500 text-sm">
+                            <span class="flex items-center mr-3">
+                                <i class="ri-chat-1-line mr-1"></i>
+                                24
+                            </span>
+                            <span class="flex items-center">
+                                <i class="ri-heart-line mr-1"></i>
+                                42
+                            </span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Best Resources for Learning Machine Learning?</h3>
+                    <p class="text-gray-600 mb-4">I'm looking to dive deeper into machine learning but not sure where to start. Any recommendations for online courses or books that worked well for you?</p>
+                    <div class="flex items-center text-sm">
+                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full mr-2">#MachineLearning</span>
+                        <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">#Resources</span>
+                    </div>
+                </div>
+                
+                <!-- Discussion Card 2 -->
+                <div class="bg-white rounded-lg shadow-md p-6 transition-transform hover:translate-y-[-5px]">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-secondary text-white flex items-center justify-center mr-3">EJ</div>
+                            <div>
+                                <h4 class="font-medium">Emily Johnson</h4>
+                                <p class="text-sm text-gray-500">Psychology • 5 hours ago</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center text-gray-500 text-sm">
+                            <span class="flex items-center mr-3">
+                                <i class="ri-chat-1-line mr-1"></i>
+                                18
+                            </span>
+                            <span class="flex items-center">
+                                <i class="ri-heart-line mr-1"></i>
+                                31
+                            </span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Tips for Managing Academic Stress?</h3>
+                    <p class="text-gray-600 mb-4">Finals are approaching and I'm feeling overwhelmed. What strategies have worked for you to manage stress while maintaining good academic performance?</p>
+                    <div class="flex items-center text-sm">
+                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full mr-2">#MentalHealth</span>
+                        <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full">#StudyTips</span>
+                    </div>
+                </div>
+                
+                <!-- Discussion Card 3 -->
+                <div class="bg-white rounded-lg shadow-md p-6 transition-transform hover:translate-y-[-5px]">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-purple-500 text-white flex items-center justify-center mr-3">MR</div>
+                            <div>
+                                <h4 class="font-medium">Michael Rodriguez</h4>
+                                <p class="text-sm text-gray-500">Business • 1 day ago</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center text-gray-500 text-sm">
+                            <span class="flex items-center mr-3">
+                                <i class="ri-chat-1-line mr-1"></i>
+                                36
+                            </span>
+                            <span class="flex items-center">
+                                <i class="ri-heart-line mr-1"></i>
+                                58
+                            </span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Summer Internship Opportunities 2025</h3>
+                    <p class="text-gray-600 mb-4">Let's create a thread to share summer internship opportunities for 2025. I'll start with a few I've found in marketing and finance sectors.</p>
+                    <div class="flex items-center text-sm">
+                        <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full mr-2">#Internships</span>
+                        <span class="bg-orange-100 text-orange-800 px-2 py-1 rounded-full">#CareerAdvice</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-10">
+                <a href="#" class="inline-block bg-white border border-gray-300 text-gray-700 px-6 py-3 !rounded-button hover:bg-gray-50 transition-all whitespace-nowrap">
+                    View All Discussions
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-2">Academic Resources</h2>
+                <p class="text-gray-600">Access study materials, guides, and tools to help you succeed.</p>
+            </div>
+            
+            <div class="flex justify-center mb-6">
+                <div class="inline-flex bg-gray-100 rounded-full p-1">
+                    <button class="resource-tab px-5 py-2 rounded-full tab-active whitespace-nowrap" data-category="all">All Resources</button>
+                    <button class="resource-tab px-5 py-2 rounded-full whitespace-nowrap" data-category="science">Science</button>
+                    <button class="resource-tab px-5 py-2 rounded-full whitespace-nowrap" data-category="humanities">Humanities</button>
+                    <button class="resource-tab px-5 py-2 rounded-full whitespace-nowrap" data-category="business">Business</button>
+                    <button class="resource-tab px-5 py-2 rounded-full whitespace-nowrap" data-category="technology">Technology</button>
+                </div>
+            </div>
+            <div class="flex justify-center mb-8">
+                <button id="upload-resource-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-all flex items-center gap-2">
+                    <i class="ri-upload-line"></i>
+                    Upload Resource
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 resources-container">
+                <!-- Resource Card 1 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:translate-y-[-5px]" data-category="science">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center bg-blue-100 rounded-lg mr-4">
+                                <i class="ri-file-pdf-line ri-lg text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold">Biology Lab Techniques Guide</h3>
+                                <p class="text-sm text-gray-500">PDF • 4.2 MB</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Comprehensive guide covering essential laboratory techniques for biology students, including microscopy, dissection, and sample preparation.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Uploaded by Prof. Sarah Chen</span>
+                            <button class="flex items-center text-primary hover:text-primary-dark">
+                                <i class="ri-download-line mr-1"></i>
+                                Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Resource Card 2 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:translate-y-[-5px]" data-category="technology">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center bg-green-100 rounded-lg mr-4">
+                                <i class="ri-file-zip-line ri-lg text-green-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold">Web Development Starter Kit</h3>
+                                <p class="text-sm text-gray-500">ZIP • 12.8 MB</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">A collection of templates, code snippets, and resources to help you get started with modern web development projects.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Uploaded by Daniel Park</span>
+                            <button class="flex items-center text-primary hover:text-primary-dark">
+                                <i class="ri-download-line mr-1"></i>
+                                Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Resource Card 3 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:translate-y-[-5px]" data-category="humanities">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center bg-purple-100 rounded-lg mr-4">
+                                <i class="ri-file-word-line ri-lg text-purple-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold">Essay Writing Guidelines</h3>
+                                <p class="text-sm text-gray-500">DOCX • 1.5 MB</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Detailed guide on structuring academic essays, including thesis development, citation styles, and common writing mistakes to avoid.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Uploaded by Prof. Rebecca Taylor</span>
+                            <button class="flex items-center text-primary hover:text-primary-dark">
+                                <i class="ri-download-line mr-1"></i>
+                                Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Resource Card 4 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:translate-y-[-5px]" data-category="business">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center bg-yellow-100 rounded-lg mr-4">
+                                <i class="ri-file-excel-line ri-lg text-yellow-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold">Financial Analysis Templates</h3>
+                                <p class="text-sm text-gray-500">XLSX • 3.7 MB</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Collection of Excel templates for financial analysis, including cash flow statements, balance sheets, and investment calculators.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Uploaded by Prof. Robert Johnson</span>
+                            <button class="flex items-center text-primary hover:text-primary-dark">
+                                <i class="ri-download-line mr-1"></i>
+                                Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Resource Card 5 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:translate-y-[-5px]" data-category="science">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center bg-red-100 rounded-lg mr-4">
+                                <i class="ri-slideshow-line ri-lg text-red-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold">Physics Lecture Slides</h3>
+                                <p class="text-sm text-gray-500">PPTX • 8.2 MB</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Comprehensive slide deck covering mechanics, thermodynamics, and electromagnetism with detailed diagrams and examples.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Uploaded by Prof. Alan Wong</span>
+                            <button class="flex items-center text-primary hover:text-primary-dark">
+                                <i class="ri-download-line mr-1"></i>
+                                Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Resource Card 6 -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:translate-y-[-5px]" data-category="technology">
+                    <div class="p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 flex items-center justify-center bg-indigo-100 rounded-lg mr-4">
+                                <i class="ri-video-line ri-lg text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold">Data Science Tutorial Series</h3>
+                                <p class="text-sm text-gray-500">MP4 • 1.2 GB</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4">Video tutorial series covering Python programming for data analysis, visualization, and machine learning fundamentals.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-gray-500">Uploaded by Maria Gonzalez</span>
+                            <button class="flex items-center text-primary hover:text-primary-dark">
+                                <i class="ri-download-line mr-1"></i>
+                                Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-10">
+                <a href="#" class="inline-block bg-white border border-gray-300 text-gray-700 px-6 py-3 !rounded-button hover:bg-gray-50 transition-all whitespace-nowrap">
+                    Browse All Resources
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <a href="#" class="font-['Pacifico'] text-2xl text-white mb-4 inline-block">CampusConnect</a>
+                    <p class="text-gray-400 mb-4">The ultimate platform for students to network, discover events, and share resources on campus.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors">
+                            <i class="ri-facebook-fill"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors">
+                            <i class="ri-twitter-x-fill"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors">
+                            <i class="ri-instagram-fill"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors">
+                            <i class="ri-linkedin-fill"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#events" class="text-gray-400 hover:text-white transition-colors">Events</a></li>
+                        <li><a href="#discussions" class="text-gray-400 hover:text-white transition-colors">Discussions</a></li>
+                        <li><a href="#resources" class="text-gray-400 hover:text-white transition-colors">Resources</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="ri-map-pin-line mt-1 mr-2"></i>
+                            <span class="text-gray-400">123 University Ave, College Town, CA 94321</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="ri-mail-line mr-2"></i>
+                            <a href="mailto:info@campusconnect.edu" class="text-gray-400 hover:text-white transition-colors">info@campusconnect.edu</a>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="ri-phone-line mr-2"></i>
+                            <a href="tel:+1234567890" class="text-gray-400 hover:text-white transition-colors">(123) 456-7890</a>
+                        </li>
+                    </ul>
+                    
+                    <div class="mt-6">
+                        <h4 class="text-sm font-semibold mb-2">Subscribe to our newsletter</h4>
+                        <div class="flex">
+                            <input type="email" placeholder="Your email address" class="flex-grow px-4 py-2 bg-gray-800 border-none rounded-l text-white text-sm">
+                            <button class="bg-primary px-4 py-2 !rounded-r-button hover:bg-opacity-90 transition-all whitespace-nowrap">Subscribe</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2025 CampusConnect. All rights reserved.</p>
+                <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 rounded-full hover:bg-primary transition-colors" id="back-to-top">
+                    <i class="ri-arrow-up-line"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Profile Modal -->
+    <div id="profile-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full relative">
+            <button id="close-profile-modal" class="absolute top-2 right-2 text-gray-400 hover:text-primary text-2xl">&times;</button>
+            <h2 class="text-2xl font-bold mb-4 text-primary text-center">Your Profile</h2>
+            <div class="flex flex-col gap-2">
+                <p><span class="font-semibold">Name:</span> <span id="modal-profile-name">-</span></p>
+                <p><span class="font-semibold">Email:</span> <span id="modal-profile-email">-</span></p>
+                <p><span class="font-semibold">User Type:</span> <span id="modal-profile-type">-</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Resource Modal -->
+    <div id="upload-resource-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-8 max-w-2xl w-full relative">
+            <button id="close-upload-resource-modal" class="absolute top-2 right-2 text-gray-400 hover:text-primary text-2xl">&times;</button>
+            <h2 class="text-2xl font-bold mb-6 text-primary text-center">Upload Resource</h2>
+            <form id="upload-resource-form" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="resource-title">Title</label>
+                        <input type="text" id="resource-title" class="w-full px-4 py-2 border border-gray-300 rounded focus:border-primary" placeholder="Enter resource title" required>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2" for="resource-category">Category</label>
+                        <select id="resource-category" class="w-full px-4 py-2 border border-gray-300 rounded focus:border-primary" required>
+                            <option value="">Select category</option>
+                            <option value="science">Science</option>
+                            <option value="humanities">Humanities</option>
+                            <option value="business">Business</option>
+                            <option value="technology">Technology</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-gray-700 mb-2" for="resource-description">Description</label>
+                    <textarea id="resource-description" class="w-full px-4 py-2 border border-gray-300 rounded focus:border-primary" rows="3" placeholder="Enter resource description" required></textarea>
+                </div>
+                <div>
+                    <label class="block text-gray-700 mb-2" for="resource-file">Resource File</label>
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                        <input type="file" id="resource-file" class="hidden" accept=".pdf,.doc,.docx,.ppt,.pptx,.txt,.zip,.mp4">
+                        <label for="resource-file" class="cursor-pointer">
+                            <i class="ri-upload-cloud-line text-4xl text-gray-400 mb-2"></i>
+                            <p class="text-gray-600">Drag and drop a file or click to browse</p>
+                            <p class="text-sm text-gray-500 mt-1">Supported: PDF, DOC, PPT, TXT, ZIP, MP4</p>
+                            <p class="text-sm text-gray-500">Max size: 50MB</p>
+                        </label>
+                    </div>
+                </div>
+                <div class="flex justify-end gap-4">
+                    <button type="button" id="cancel-upload-resource" class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all">Cancel</button>
+                    <button type="submit" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-all">Upload Resource</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Authentication check
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const userType = localStorage.getItem('userType');
+
+            // If not logged in, redirect to login page
+            if (!isLoggedIn) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // If admin is logged in, redirect to admin page
+            if (userType === 'admin') {
+                window.location.href = 'admin.html';
+                return;
+            }
+
+            // Event scroll functionality
+            const eventContainer = document.querySelector('.event-container');
+            const scrollLeftBtn = document.querySelector('.event-scroll-left');
+            const scrollRightBtn = document.querySelector('.event-scroll-right');
+
+            if (eventContainer && scrollLeftBtn && scrollRightBtn) {
+                scrollLeftBtn.addEventListener('click', () => {
+                    eventContainer.scrollBy({ left: -300, behavior: 'smooth' });
+                });
+
+                scrollRightBtn.addEventListener('click', () => {
+                    eventContainer.scrollBy({ left: 300, behavior: 'smooth' });
+                });
+            }
+
+            // Back to top button
+            const backToTopBtn = document.getElementById('back-to-top');
+            if (backToTopBtn) {
+                backToTopBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+            // Custom checkbox functionality
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('click', function() {
+                    this.checked = !this.checked;
+                });
+            });
+
+            // Resource tabs functionality
+            const resourceTabs = document.querySelectorAll('.resource-tab');
+            const resourceCards = document.querySelectorAll('.resources-container > div');
+
+            resourceTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    resourceTabs.forEach(t => t.classList.remove('tab-active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('tab-active');
+                    
+                    const category = this.dataset.category;
+                    
+                    // Show/hide resources based on category
+                    resourceCards.forEach(card => {
+                        if (category === 'all' || card.dataset.category === category) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Handle logout
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    // Clear all user data from localStorage
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userType');
+                    localStorage.removeItem('userName');
+                    localStorage.removeItem('userEmail');
+                    // Redirect to login page
+                    window.location.href = 'index.html';
+                });
+            }
+
+            // Profile modal functionality
+            const profileBtn = document.getElementById('profile-btn');
+            const profileModal = document.getElementById('profile-modal');
+            const closeProfileModal = document.getElementById('close-profile-modal');
+            if (profileBtn && profileModal && closeProfileModal) {
+                profileBtn.addEventListener('click', function() {
+                    document.getElementById('modal-profile-name').textContent = localStorage.getItem('userName') || '-';
+                    document.getElementById('modal-profile-email').textContent = localStorage.getItem('userEmail') || '-';
+                    document.getElementById('modal-profile-type').textContent = localStorage.getItem('userType') || '-';
+                    profileModal.classList.remove('hidden');
+                });
+                closeProfileModal.addEventListener('click', function() {
+                    profileModal.classList.add('hidden');
+                });
+                // Optional: close modal on outside click
+                profileModal.addEventListener('click', function(e) {
+                    if (e.target === profileModal) {
+                        profileModal.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Event Type Tabs Functionality
+            const eventTypeTabs = document.querySelectorAll('.event-type-tab');
+            const eventCards = document.querySelectorAll('.event-card');
+            let currentEventTab = 'live';
+            function updateVisibleEvents() {
+                eventCards.forEach(card => {
+                    if (card.dataset.type === currentEventTab) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+            eventTypeTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    eventTypeTabs.forEach(t => t.classList.remove('tab-active'));
+                    this.classList.add('tab-active');
+                    currentEventTab = this.dataset.type;
+                    updateVisibleEvents();
+                });
+            });
+            updateVisibleEvents();
+
+            // Join/Leave functionality for live events
+            function updateJoinButtons() {
+                const joinButtons = document.querySelectorAll('.event-card[data-type="live"] .event-join-btn');
+                joinButtons.forEach(btn => {
+                    const card = btn.closest('.event-card');
+                    const eventId = card.getAttribute('data-event-id');
+                    const joined = localStorage.getItem('joined_' + eventId) === 'true';
+                    if (joined) {
+                        btn.textContent = 'Leave Event';
+                        btn.classList.remove('bg-primary');
+                        btn.classList.add('bg-red-600');
+                    } else {
+                        btn.textContent = 'Join Event';
+                        btn.classList.add('bg-primary');
+                        btn.classList.remove('bg-red-600');
+                    }
+                    btn.onclick = function() {
+                        if (localStorage.getItem('joined_' + eventId) === 'true') {
+                            localStorage.setItem('joined_' + eventId, 'false');
+                        } else {
+                            localStorage.setItem('joined_' + eventId, 'true');
+                        }
+                        updateJoinButtons();
+                    };
+                });
+            }
+            updateJoinButtons();
+
+            // Theme Toggle Functionality
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                themeIcon.classList.remove('ri-sun-line');
+                themeIcon.classList.add('ri-moon-line');
+            } else {
+                document.documentElement.classList.remove('dark');
+                themeIcon.classList.remove('ri-moon-line');
+                themeIcon.classList.add('ri-sun-line');
+            }
+            themeToggle.addEventListener('click', function() {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    themeIcon.classList.remove('ri-moon-line');
+                    themeIcon.classList.add('ri-sun-line');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    themeIcon.classList.remove('ri-sun-line');
+                    themeIcon.classList.add('ri-moon-line');
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+
+            // Upload Resource Modal Functionality
+            const uploadResourceBtn = document.getElementById('upload-resource-btn');
+            const uploadResourceModal = document.getElementById('upload-resource-modal');
+            const closeUploadResourceModal = document.getElementById('close-upload-resource-modal');
+            const cancelUploadResource = document.getElementById('cancel-upload-resource');
+            const uploadResourceForm = document.getElementById('upload-resource-form');
+
+            if (uploadResourceBtn && uploadResourceModal) {
+                uploadResourceBtn.addEventListener('click', function() {
+                    uploadResourceModal.classList.remove('hidden');
+                });
+                closeUploadResourceModal.addEventListener('click', function() {
+                    uploadResourceModal.classList.add('hidden');
+                });
+                cancelUploadResource.addEventListener('click', function() {
+                    uploadResourceModal.classList.add('hidden');
+                });
+                uploadResourceModal.addEventListener('click', function(e) {
+                    if (e.target === uploadResourceModal) {
+                        uploadResourceModal.classList.add('hidden');
+                    }
+                });
+                uploadResourceForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const fileInput = document.getElementById('resource-file');
+                    const file = fileInput.files[0];
+                    if (file && file.size > 50 * 1024 * 1024) {
+                        alert('File size exceeds 50MB limit!');
+                        return;
+                    }
+                    // Mock upload: show success message
+                    alert('Resource uploaded successfully!');
+                    uploadResourceForm.reset();
+                    uploadResourceModal.classList.add('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
