@@ -780,428 +780,60 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Authentication check
-            const isLoggedIn = localStorage.getItem('isLoggedIn');
-            const userType = localStorage.getItem('userType');
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-            // If not logged in, redirect to login page
-            if (!isLoggedIn) {
-                window.location.href = 'login.html';
-                return;
-            }
+const firebaseConfig = {
+  apiKey: "AIzaSyB14xRzXTDpulClNdNJ7SRAUbbRyc8R0ME",
+  authDomain: "campusconnect-af9ad.web.app",
+  projectId: "campusconnect-af9ad",
+};
 
-            // If student is logged in, redirect to student page
-            if (userType === 'student') {
-                window.location.href = 'index.html';
-                return;
-            }
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const backendBase = "https://campusconnect-af9ad-default-rtdb.firebaseio.com";
 
-            // Event Type Tabs Functionality
-            const eventTypeTabs = document.querySelectorAll('.event-type-tab');
-            eventTypeTabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    eventTypeTabs.forEach(t => t.classList.remove('tab-active'));
-                    this.classList.add('tab-active');
-                });
-            });
+function renderUserList(users) {
+  const container = document.getElementById("user-list");
+  container.innerHTML = "";
+  users.forEach(user => {
+    const div = document.createElement("div");
+    div.className = "bg-white p-4 rounded shadow mb-4";
+    div.innerHTML = `<strong>${user.name}</strong> — ${user.email} (${user.role})`;
+    container.appendChild(div);
+  });
+}
 
-            // Profile Modal Functionality
-            const profileBtn = document.getElementById('profile-btn');
-            const profileModal = document.getElementById('profile-modal');
-            const closeProfileModal = document.getElementById('close-profile-modal');
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    const token = await user.getIdToken();
+    const uid = user.uid;
 
-            if (profileBtn && profileModal && closeProfileModal) {
-                profileBtn.addEventListener('click', function() {
-                    document.getElementById('modal-profile-name').textContent = localStorage.getItem('userName') || '-';
-                    document.getElementById('modal-profile-email').textContent = localStorage.getItem('userEmail') || '-';
-                    document.getElementById('modal-profile-role').textContent = 'Administrator';
-                    profileModal.classList.remove('hidden');
-                });
+    // Fetch profile
+    const profileRes = await fetch(`${backendBase}/main/profile/${uid}`);
+    const profile = await profileRes.json();
+    if (profile.role !== "admin") {
+      window.location.href = "main.html";
+    }
 
-                closeProfileModal.addEventListener('click', function() {
-                    profileModal.classList.add('hidden');
-                });
+    // Display profile data
+    document.getElementById("admin-name").textContent = profile.name;
 
-                profileModal.addEventListener('click', function(e) {
-                    if (e.target === profileModal) {
-                        profileModal.classList.add('hidden');
-                    }
-                });
-            }
+    // Fetch users
+    const userRes = await fetch(`${backendBase}/admin/users`);
+    const users = await userRes.json();
+    renderUserList(users);
+  } else {
+    window.location.href = "index.html";
+  }
+});
 
-            // Handle logout
-            const logoutBtn = document.getElementById('logout-btn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', function() {
-                    // Clear all user data from localStorage
-                    localStorage.removeItem('isLoggedIn');
-                    localStorage.removeItem('userType');
-                    localStorage.removeItem('userName');
-                    localStorage.removeItem('userEmail');
-                    // Redirect to login page
-                    window.location.href = 'index.html';
-                });
-            }
-
-            // Create Event Modal Functionality
-            const createEventBtn = document.querySelector('button:has(i.ri-add-line)');
-            const createEventModal = document.getElementById('create-event-modal');
-            const closeCreateEventModal = document.getElementById('close-create-event-modal');
-            const cancelCreateEvent = document.getElementById('cancel-create-event');
-            const createEventForm = document.getElementById('create-event-form');
-
-            if (createEventBtn && createEventModal) {
-                createEventBtn.addEventListener('click', function() {
-                    createEventModal.classList.remove('hidden');
-                });
-
-                closeCreateEventModal.addEventListener('click', function() {
-                    createEventModal.classList.add('hidden');
-                });
-
-                cancelCreateEvent.addEventListener('click', function() {
-                    createEventModal.classList.add('hidden');
-                });
-
-                // Close modal on outside click
-                createEventModal.addEventListener('click', function(e) {
-                    if (e.target === createEventModal) {
-                        createEventModal.classList.add('hidden');
-                    }
-                });
-
-                // Handle form submission
-                createEventForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    // Get form data
-                    const eventData = {
-                        title: document.getElementById('event-title').value,
-                        category: document.getElementById('event-category').value,
-                        description: document.getElementById('event-description').value,
-                        date: document.getElementById('event-date').value,
-                        time: document.getElementById('event-time').value,
-                        location: document.getElementById('event-location').value,
-                        capacity: document.getElementById('event-capacity').value,
-                        featured: document.getElementById('event-featured').checked,
-                        image: document.getElementById('event-image').files[0]
-                    };
-
-                    // Here you would typically send the data to your backend
-                    // For now, we'll just show a success message
-                    alert('Event created successfully!');
-                    
-                    // Reset form and close modal
-                    createEventForm.reset();
-                    createEventModal.classList.add('hidden');
-
-                    // Show success notification
-                    const notification = document.createElement('div');
-                    notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform transition-transform duration-300 translate-y-0';
-                    notification.textContent = 'Event created successfully!';
-                    document.body.appendChild(notification);
-
-                    // Remove notification after 3 seconds
-                    setTimeout(() => {
-                        notification.classList.add('translate-y-full');
-                        setTimeout(() => notification.remove(), 300);
-                    }, 3000);
-                });
-
-                // Drag and drop functionality for image upload
-                const dropZone = document.querySelector('.border-dashed');
-                const fileInput = document.getElementById('event-image');
-
-                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                    dropZone.addEventListener(eventName, preventDefaults, false);
-                });
-
-                function preventDefaults(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-
-                ['dragenter', 'dragover'].forEach(eventName => {
-                    dropZone.addEventListener(eventName, highlight, false);
-                });
-
-                ['dragleave', 'drop'].forEach(eventName => {
-                    dropZone.addEventListener(eventName, unhighlight, false);
-                });
-
-                function highlight(e) {
-                    dropZone.classList.add('border-primary');
-                }
-
-                function unhighlight(e) {
-                    dropZone.classList.remove('border-primary');
-                }
-
-                dropZone.addEventListener('drop', handleDrop, false);
-
-                function handleDrop(e) {
-                    const dt = e.dataTransfer;
-                    const files = dt.files;
-                    fileInput.files = files;
-                }
-            }
-
-            // Add User Modal Functionality
-            const addUserBtn = document.querySelector('button:has(i.ri-user-add-line)');
-            const addUserModal = document.getElementById('add-user-modal');
-            const closeAddUserModal = document.getElementById('close-add-user-modal');
-            const cancelAddUser = document.getElementById('cancel-add-user');
-            const addUserForm = document.getElementById('add-user-form');
-
-            if (addUserBtn && addUserModal) {
-                addUserBtn.addEventListener('click', function() {
-                    addUserModal.classList.remove('hidden');
-                });
-
-                closeAddUserModal.addEventListener('click', function() {
-                    addUserModal.classList.add('hidden');
-                });
-
-                cancelAddUser.addEventListener('click', function() {
-                    addUserModal.classList.add('hidden');
-                });
-
-                addUserModal.addEventListener('click', function(e) {
-                    if (e.target === addUserModal) {
-                        addUserModal.classList.add('hidden');
-                    }
-                });
-
-                addUserForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const password = document.getElementById('user-password').value;
-                    const confirmPassword = document.getElementById('user-confirm-password').value;
-
-                    if (password !== confirmPassword) {
-                        alert('Passwords do not match!');
-                        return;
-                    }
-
-                    const userData = {
-                        name: document.getElementById('user-name').value,
-                        email: document.getElementById('user-email').value,
-                        role: document.getElementById('user-role').value,
-                        department: document.getElementById('user-department').value,
-                        password: password
-                    };
-
-                    // Here you would typically send the data to your backend
-                    alert('User added successfully!');
-                    
-                    addUserForm.reset();
-                    addUserModal.classList.add('hidden');
-
-                    showNotification('User added successfully!', 'success');
-                });
-            }
-
-            // Upload Resource Modal Functionality
-            const uploadResourceBtn = document.querySelector('button:has(i.ri-upload-line)');
-            const uploadResourceModal = document.getElementById('upload-resource-modal');
-            const closeUploadResourceModal = document.getElementById('close-upload-resource-modal');
-            const cancelUploadResource = document.getElementById('cancel-upload-resource');
-            const uploadResourceForm = document.getElementById('upload-resource-form');
-
-            if (uploadResourceBtn && uploadResourceModal) {
-                uploadResourceBtn.addEventListener('click', function() {
-                    uploadResourceModal.classList.remove('hidden');
-                });
-
-                closeUploadResourceModal.addEventListener('click', function() {
-                    uploadResourceModal.classList.add('hidden');
-                });
-
-                cancelUploadResource.addEventListener('click', function() {
-                    uploadResourceModal.classList.add('hidden');
-                });
-
-                uploadResourceModal.addEventListener('click', function(e) {
-                    if (e.target === uploadResourceModal) {
-                        uploadResourceModal.classList.add('hidden');
-                    }
-                });
-
-                uploadResourceForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    
-                    const fileInput = document.getElementById('resource-file');
-                    const file = fileInput.files[0];
-
-                    if (file && file.size > 50 * 1024 * 1024) { // 50MB limit
-                        alert('File size exceeds 50MB limit!');
-                        return;
-                    }
-
-                    const resourceData = {
-                        title: document.getElementById('resource-title').value,
-                        category: document.getElementById('resource-category').value,
-                        description: document.getElementById('resource-description').value,
-                        file: file,
-                        isPublic: document.getElementById('resource-public').checked
-                    };
-
-                    // Here you would typically send the data to your backend
-                    alert('Resource uploaded successfully!');
-                    
-                    uploadResourceForm.reset();
-                    uploadResourceModal.classList.add('hidden');
-
-                    showNotification('Resource uploaded successfully!', 'success');
-                });
-
-                // Drag and drop functionality for resource upload
-                const resourceDropZone = uploadResourceModal.querySelector('.border-dashed');
-                const resourceFileInput = document.getElementById('resource-file');
-
-                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                    resourceDropZone.addEventListener(eventName, preventDefaults, false);
-                });
-
-                ['dragenter', 'dragover'].forEach(eventName => {
-                    resourceDropZone.addEventListener(eventName, highlight, false);
-                });
-
-                ['dragleave', 'drop'].forEach(eventName => {
-                    resourceDropZone.addEventListener(eventName, unhighlight, false);
-                });
-
-                resourceDropZone.addEventListener('drop', function(e) {
-                    const dt = e.dataTransfer;
-                    const files = dt.files;
-                    resourceFileInput.files = files;
-                });
-            }
-
-            // Settings Modal Functionality
-            const settingsBtn = document.querySelector('button:has(i.ri-settings-line)');
-            const settingsModal = document.getElementById('settings-modal');
-            const closeSettingsModal = document.getElementById('close-settings-modal');
-            const cancelSettings = document.getElementById('cancel-settings');
-            const saveSettings = document.getElementById('save-settings');
-            const settingsTabs = document.querySelectorAll('.settings-tab');
-            const settingsPanels = document.querySelectorAll('.settings-panel');
-
-            if (settingsBtn && settingsModal) {
-                settingsBtn.addEventListener('click', function() {
-                    settingsModal.classList.remove('hidden');
-                });
-
-                closeSettingsModal.addEventListener('click', function() {
-                    settingsModal.classList.add('hidden');
-                });
-
-                cancelSettings.addEventListener('click', function() {
-                    settingsModal.classList.add('hidden');
-                });
-
-                settingsModal.addEventListener('click', function(e) {
-                    if (e.target === settingsModal) {
-                        settingsModal.classList.add('hidden');
-                    }
-                });
-
-                // Settings Tabs Functionality
-                settingsTabs.forEach(tab => {
-                    tab.addEventListener('click', function() {
-                        const targetPanel = this.dataset.tab;
-                        
-                        // Update active tab
-                        settingsTabs.forEach(t => t.classList.remove('tab-active'));
-                        this.classList.add('tab-active');
-                        
-                        // Show target panel
-                        settingsPanels.forEach(panel => {
-                            panel.classList.add('hidden');
-                            if (panel.id === `${targetPanel}-settings`) {
-                                panel.classList.remove('hidden');
-                            }
-                        });
-                    });
-                });
-
-                // Save Settings
-                saveSettings.addEventListener('click', function() {
-                    // Collect all settings data
-                    const settingsData = {
-                        general: {
-                            siteName: document.getElementById('site-name').value,
-                            siteDescription: document.getElementById('site-description').value,
-                            contactEmail: document.getElementById('contact-email').value,
-                            timezone: document.getElementById('timezone').value,
-                            maintenanceMode: document.getElementById('maintenance-mode').checked
-                        },
-                        notifications: {
-                            newUsers: document.getElementById('notify-new-users').checked,
-                            events: document.getElementById('notify-events').checked,
-                            resources: document.getElementById('notify-resources').checked,
-                            systemUpdates: document.getElementById('notify-system-updates').checked,
-                            security: document.getElementById('notify-security').checked
-                        },
-                        security: {
-                            minPasswordLength: document.getElementById('min-password-length').value,
-                            passwordExpiry: document.getElementById('password-expiry').value,
-                            enable2FA: document.getElementById('enable-2fa').checked,
-                            require2FAAdmin: document.getElementById('require-2fa-admin').checked
-                        },
-                        appearance: {
-                            theme: document.getElementById('theme').value,
-                            primaryColor: document.getElementById('primary-color').value,
-                            compactView: document.getElementById('compact-view').checked,
-                            showStats: document.getElementById('show-stats').checked
-                        }
-                    };
-
-                    // Here you would typically send the data to your backend
-                    // For now, we'll just show a success message
-                    showNotification('Settings saved successfully!', 'success');
-                    settingsModal.classList.add('hidden');
-
-                    // Apply theme changes immediately
-                    if (settingsData.appearance.theme === 'dark') {
-                        document.documentElement.classList.add('dark');
-                    } else {
-                        document.documentElement.classList.remove('dark');
-                    }
-
-                    // Apply primary color
-                    document.documentElement.style.setProperty('--primary-color', settingsData.appearance.primaryColor);
-                });
-            }
-
-            // Theme Toggle Functionality
-            const themeToggle = document.getElementById('theme-toggle');
-            const themeIcon = themeToggle.querySelector('i');
-            
-            // Check for saved theme preference
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.documentElement.classList.add('dark');
-                themeIcon.classList.remove('ri-sun-line');
-                themeIcon.classList.add('ri-moon-line');
-            }
-
-            themeToggle.addEventListener('click', function() {
-                if (document.documentElement.classList.contains('dark')) {
-                    document.documentElement.classList.remove('dark');
-                    themeIcon.classList.remove('ri-moon-line');
-                    themeIcon.classList.add('ri-sun-line');
-                    localStorage.setItem('theme', 'light');
-                } else {
-                    document.documentElement.classList.add('dark');
-                    themeIcon.classList.remove('ri-sun-line');
-                    themeIcon.classList.add('ri-moon-line');
-                    localStorage.setItem('theme', 'dark');
-                }
-            });
-        });
-    </script>
+document.getElementById("logout-btn").addEventListener("click", async () => {
+  await signOut(auth);
+  localStorage.clear();
+  window.location.href = "index.html";
+});
+</script>
 </body>
 </html> 
