@@ -310,7 +310,10 @@
                         </div>
                         <h3 class="text-xl font-semibold mb-2">Web Development Workshop</h3>
                         <p class="text-gray-600 mb-4 flex-grow">Learn the fundamentals of modern web development with hands-on exercises and expert guidance.</p>
-                        <button class="event-join-btn bg-primary text-white px-4 py-2 !rounded-button hover:bg-opacity-90 transition-all whitespace-nowrap">Join Event</button>
+                       <button class="join-btn bg-primary text-white px-4 py-2 mt-2 rounded" data-id="1">
+  Join Event
+</button>
+
                     </div>
                 </div>
                 <!-- Upcoming Event Card Example -->
@@ -500,12 +503,6 @@
                     <button class="resource-tab px-5 py-2 rounded-full whitespace-nowrap" data-category="business">Business</button>
                     <button class="resource-tab px-5 py-2 rounded-full whitespace-nowrap" data-category="technology">Technology</button>
                 </div>
-            </div>
-            <div class="flex justify-center mb-8">
-                <button id="upload-resource-btn" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-all flex items-center gap-2">
-                    <i class="ri-upload-line"></i>
-                    Upload Resource
-                </button>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 resources-container">
@@ -712,7 +709,7 @@
                         <h4 class="text-sm font-semibold mb-2">Subscribe to our newsletter</h4>
                         <div class="flex">
                             <input type="email" placeholder="Your email address" class="flex-grow px-4 py-2 bg-gray-800 border-none rounded-l text-white text-sm">
-                            <button class="bg-primary px-4 py-2 !rounded-r-button hover:bg-opacity-90 transition-all whitespace-nowrap">Subscribe</button>
+                            <button oneclick class="bg-primary px-4 py-2 !rounded-r-button hover:bg-opacity-90 transition-all whitespace-nowrap">Subscribe</button>
                         </div>
                     </div>
                 </div>
@@ -787,87 +784,272 @@
         </div>
     </div>
 
-    <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+    <script>
+        
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.join-btn').forEach(button => {
+    button.addEventListener('click', async () => {
+      const eventId = button.getAttribute('data-id');
+      const email = localStorage.getItem('userEmail');
 
-const firebaseConfig = {
-  apiKey: "AIzaSyB14xRzXTDpulClNdNJ7SRAUbbRyc8R0ME",
-  authDomain: "campusconnect-af9ad.web.app",
-  projectId: "campusconnect-af9ad",
-};
+      if (!email) {
+        alert("Please login to join events.");
+        window.location.href = 'index.html';
+        return;
+      }
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const backendBase = "https://campusconnect-af9ad-default-rtdb.firebaseio.com";
+      try {
+        const response = await fetch('http://192.168.1.2/api/join_event.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ email, event_id: eventId })
+        });
 
-onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    window.location.href = "index.html";
-  } else {
-    const uid = user.uid;
-    const res = await fetch(`${backendBase}/main/profile/${uid}`);
-    const profile = await res.json();
+        const result = await response.json();
 
-    if (profile.role === "admin") {
-      window.location.href = "admin.html";
-    }
+        if (result.success) {
+          alert("You’ve successfully joined the event!");
+          button.disabled = true;
+          button.textContent = "Joined";
+          button.classList.add("bg-gray-400", "cursor-not-allowed");
+        } else {
+          alert(result.message || "Failed to join event.");
+        }
 
-    document.getElementById("profile-btn").textContent = profile.name;
-
-    const eventsRes = await fetch(`${backendBase}/events`);
-    const events = await eventsRes.json();
-    const eventContainer = document.querySelector(".event-container");
-    eventContainer.innerHTML = "";
-    events.forEach(event => {
-      const div = document.createElement("div");
-      div.className = `event-card min-w-[300px] max-w-[300px] bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-transform hover:translate-y-[-5px]`;
-      div.setAttribute("data-type", event.type);
-      div.innerHTML = `
-        <img src="${event.image}" alt="${event.title}" class="h-40 w-full object-cover">
-        <div class="p-5 flex flex-col flex-grow">
-          <div class="flex items-center text-sm text-gray-500 mb-2">
-            <span class="flex items-center mr-4">
-              <i class="ri-calendar-line mr-1"></i> ${event.date}
-            </span>
-            <span class="flex items-center">
-              <i class="ri-map-pin-line mr-1"></i> ${event.location}
-            </span>
-          </div>
-          <h3 class="text-xl font-semibold mb-2">${event.title}</h3>
-          <p class="text-gray-600 mb-4 flex-grow">${event.description}</p>
-          <button class="bg-primary text-white px-4 py-2 !rounded-button hover:bg-opacity-90 transition-all whitespace-nowrap">Join</button>
-        </div>`;
-      eventContainer.appendChild(div);
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Network error. Try again later.");
+      }
     });
-
-    const resourcesRes = await fetch(`${backendBase}/resources`);
-    const resources = await resourcesRes.json();
-    const resourceContainer = document.querySelector(".resources-container");
-    resourceContainer.innerHTML = "";
-    resources.forEach(resource => {
-      const card = document.createElement("div");
-      card.className = `bg-white rounded-lg shadow-md overflow-hidden transition-transform hover:translate-y-[-5px]`;
-      card.setAttribute("data-category", resource.category);
-      card.innerHTML = `
-        <div class="p-6">
-          <h3 class="text-lg font-semibold mb-2">${resource.title}</h3>
-          <p class="text-gray-600 mb-4">${resource.description}</p>
-          <a href="${resource.url}" target="_blank" class="inline-flex items-center text-primary hover:text-primary-dark font-medium">
-            View Resource <i class="ri-external-link-line ml-1"></i>
-          </a>
-        </div>`;
-      resourceContainer.appendChild(card);
-    });
-  }
+  });
 });
 
-document.getElementById("logout-btn").addEventListener("click", async () => {
-  await signOut(auth);
-  localStorage.clear();
-  window.location.href = "index.html";
-});
-</script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Authentication check
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const userType = localStorage.getItem('userType');
 
+            // If not logged in, redirect to login page
+            if (!isLoggedIn) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // If admin is logged in, redirect to admin page
+            if (userType === 'admin') {
+                window.location.href = 'admin.html';
+                return;
+            }
+
+            // Event scroll functionality
+            const eventContainer = document.querySelector('.event-container');
+            const scrollLeftBtn = document.querySelector('.event-scroll-left');
+            const scrollRightBtn = document.querySelector('.event-scroll-right');
+
+            if (eventContainer && scrollLeftBtn && scrollRightBtn) {
+                scrollLeftBtn.addEventListener('click', () => {
+                    eventContainer.scrollBy({ left: -300, behavior: 'smooth' });
+                });
+
+                scrollRightBtn.addEventListener('click', () => {
+                    eventContainer.scrollBy({ left: 300, behavior: 'smooth' });
+                });
+            }
+
+            // Back to top button
+            const backToTopBtn = document.getElementById('back-to-top');
+            if (backToTopBtn) {
+                backToTopBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+            // Custom checkbox functionality
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('click', function() {
+                    this.checked = !this.checked;
+                });
+            });
+
+            // Resource tabs functionality
+            const resourceTabs = document.querySelectorAll('.resource-tab');
+            const resourceCards = document.querySelectorAll('.resources-container > div');
+
+            resourceTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    resourceTabs.forEach(t => t.classList.remove('tab-active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('tab-active');
+                    
+                    const category = this.dataset.category;
+                    
+                    // Show/hide resources based on category
+                    resourceCards.forEach(card => {
+                        if (category === 'all' || card.dataset.category === category) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Handle logout
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    // Clear all user data from localStorage
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userType');
+                    localStorage.removeItem('userName');
+                    localStorage.removeItem('userEmail');
+                    // Redirect to login page
+                    window.location.href = 'index.html';
+                });
+            }
+
+            // Profile modal functionality
+            const profileBtn = document.getElementById('profile-btn');
+            const profileModal = document.getElementById('profile-modal');
+            const closeProfileModal = document.getElementById('close-profile-modal');
+            if (profileBtn && profileModal && closeProfileModal) {
+                profileBtn.addEventListener('click', function() {
+                    document.getElementById('modal-profile-name').textContent = localStorage.getItem('userName') || '-';
+                    document.getElementById('modal-profile-email').textContent = localStorage.getItem('userEmail') || '-';
+                    document.getElementById('modal-profile-type').textContent = localStorage.getItem('userType') || '-';
+                    profileModal.classList.remove('hidden');
+                });
+                closeProfileModal.addEventListener('click', function() {
+                    profileModal.classList.add('hidden');
+                });
+                // Optional: close modal on outside click
+                profileModal.addEventListener('click', function(e) {
+                    if (e.target === profileModal) {
+                        profileModal.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Event Type Tabs Functionality
+            const eventTypeTabs = document.querySelectorAll('.event-type-tab');
+            const eventCards = document.querySelectorAll('.event-card');
+            let currentEventTab = 'live';
+            function updateVisibleEvents() {
+                eventCards.forEach(card => {
+                    if (card.dataset.type === currentEventTab) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+            eventTypeTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    eventTypeTabs.forEach(t => t.classList.remove('tab-active'));
+                    this.classList.add('tab-active');
+                    currentEventTab = this.dataset.type;
+                    updateVisibleEvents();
+                });
+            });
+            updateVisibleEvents();
+
+            // Join/Leave functionality for live events
+            function updateJoinButtons() {
+                const joinButtons = document.querySelectorAll('.event-card[data-type="live"] .event-join-btn');
+                joinButtons.forEach(btn => {
+                    const card = btn.closest('.event-card');
+                    const eventId = card.getAttribute('data-event-id');
+                    const joined = localStorage.getItem('joined_' + eventId) === 'true';
+                    if (joined) {
+                        btn.textContent = 'Leave Event';
+                        btn.classList.remove('bg-primary');
+                        btn.classList.add('bg-red-600');
+                    } else {
+                        btn.textContent = 'Join Event';
+                        btn.classList.add('bg-primary');
+                        btn.classList.remove('bg-red-600');
+                    }
+                    btn.onclick = function() {
+                        if (localStorage.getItem('joined_' + eventId) === 'true') {
+                            localStorage.setItem('joined_' + eventId, 'false');
+                        } else {
+                            localStorage.setItem('joined_' + eventId, 'true');
+                        }
+                        updateJoinButtons();
+                    };
+                });
+            }
+            updateJoinButtons();
+
+            // Theme Toggle Functionality
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = themeToggle.querySelector('i');
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                themeIcon.classList.remove('ri-sun-line');
+                themeIcon.classList.add('ri-moon-line');
+            } else {
+                document.documentElement.classList.remove('dark');
+                themeIcon.classList.remove('ri-moon-line');
+                themeIcon.classList.add('ri-sun-line');
+            }
+            themeToggle.addEventListener('click', function() {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    themeIcon.classList.remove('ri-moon-line');
+                    themeIcon.classList.add('ri-sun-line');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    themeIcon.classList.remove('ri-sun-line');
+                    themeIcon.classList.add('ri-moon-line');
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+
+            // Upload Resource Modal Functionality
+            const uploadResourceBtn = document.getElementById('upload-resource-btn');
+            const uploadResourceModal = document.getElementById('upload-resource-modal');
+            const closeUploadResourceModal = document.getElementById('close-upload-resource-modal');
+            const cancelUploadResource = document.getElementById('cancel-upload-resource');
+            const uploadResourceForm = document.getElementById('upload-resource-form');
+
+            if (uploadResourceBtn && uploadResourceModal) {
+                uploadResourceBtn.addEventListener('click', function() {
+                    uploadResourceModal.classList.remove('hidden');
+                });
+                closeUploadResourceModal.addEventListener('click', function() {
+                    uploadResourceModal.classList.add('hidden');
+                });
+                cancelUploadResource.addEventListener('click', function() {
+                    uploadResourceModal.classList.add('hidden');
+                });
+                uploadResourceModal.addEventListener('click', function(e) {
+                    if (e.target === uploadResourceModal) {
+                        uploadResourceModal.classList.add('hidden');
+                    }
+                });
+                uploadResourceForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const fileInput = document.getElementById('resource-file');
+                    const file = fileInput.files[0];
+                    if (file && file.size > 50 * 1024 * 1024) {
+                        alert('File size exceeds 50MB limit!');
+                        return;
+                    }
+                    // Mock upload: show success message
+                    alert('Resource uploaded successfully!');
+                    uploadResourceForm.reset();
+                    uploadResourceModal.classList.add('hidden');
+                });
+            }
+        });
+    </script>
 </body>
 </html>
