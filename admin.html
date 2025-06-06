@@ -788,13 +788,13 @@
 
             // If not logged in, redirect to login page
             if (!isLoggedIn) {
-                window.location.href = 'index.html';
+                window.location.href = 'login.html';
                 return;
             }
 
             // If student is logged in, redirect to student page
             if (userType === 'student') {
-                window.location.href = 'main.html';
+                window.location.href = 'index.html';
                 return;
             }
 
@@ -1079,7 +1079,6 @@
                     resourceFileInput.files = files;
                 });
             }
-
             // Settings Modal Functionality
             const settingsBtn = document.querySelector('button:has(i.ri-settings-line)');
             const settingsModal = document.getElementById('settings-modal');
