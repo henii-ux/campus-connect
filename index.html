@@ -102,7 +102,7 @@
             <form class="space-y-4" id="signup-form">
               <div>
                 <label class="block text-gray-700 mb-2">User Type</label>
-                <select id="signup-user-type" class="w-full px-4 py-2 border border-gray-300 rounded focus:border-primary" required>
+                <select id="signup-user-type" class="w-full px-4 py-2 border border-gray-300 rounded" required>
                   <option value="student">Student</option>
                   <option value="admin">Admin</option>
                 </select>
@@ -155,7 +155,7 @@
                   <input type="checkbox" id="login-remember" class="mr-2" />
                   <label class="text-sm text-gray-600">Remember me</label>
                 </div>
-                <a href="#" class="text-sm text-primary">Forgot password?</a>
+                <a href="#" id="forgot-password-link" class="text-sm text-primary">Forgot password?</a>
               </div>
               <button type="submit" class="w-full bg-primary text-white py-3 rounded-button hover:bg-opacity-90">Log In</button>
             </form>
@@ -201,7 +201,7 @@
           return;
         }
 
-        fetch('http://192.168.1.2/api/signup.php', {
+        fetch('http:// 192.168.31.14/api/signup.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: new URLSearchParams({
@@ -232,13 +232,19 @@
       // Log In
       document.getElementById('login-form').addEventListener('submit', async function (e) {
         e.preventDefault();
+        const rememberMe = document.getElementById('login-remember').checked;
+        if (!rememberMe) {
+          alert('Please check "Remember me" before logging in.');
+          return;
+        }
+
         const data = {
           user_type: document.getElementById('login-user-type').value,
           email: document.getElementById('login-email').value,
           password: document.getElementById('login-password').value
         };
 
-        const response = await fetch('http://192.168.1.2/api/login.php', {
+        const response = await fetch('http://192.168.31.14/api/login.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: new URLSearchParams(data)
@@ -253,6 +259,25 @@
           window.location.href = data.user_type === 'admin' ? 'admin.html' : 'main.html';
         } else {
           alert(result.message || 'Login failed');
+        }
+      });
+
+      // Forgot Password
+      document.getElementById('forgot-password-link').addEventListener('click', function (e) {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value.trim();
+        if (!email) {
+          alert('Please enter your email first.');
+          return;
+        }
+        const useEmail = confirm("Do you want to open your email app to reset your password?\nClick Cancel to contact support via Messenger.");
+        if (useEmail) {
+          const subject = encodeURIComponent("Password Reset Request");
+          const body = encodeURIComponent(`Hi,\n\nI forgot my password for CampusConnect. My email is: ${email}\nPlease assist.\n\nThanks.`);
+          window.location.href = `mailto:support@campusconnect.com?subject=${subject}&body=${body}`;
+        } else {
+          const message = encodeURIComponent(`Hi, I forgot my CampusConnect password. My email is: ${email}`);
+          window.open(`https://wa.me/1234567890?text=${message}`, '_blank');
         }
       });
     });
