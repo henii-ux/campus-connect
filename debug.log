@@ -1,0 +1,351 @@
+SESSION: Array
+(
+)
+SESSION: Array
+(
+)
+SESSION: Array
+(
+)
+SESSION: Array
+(
+)
+
+POST: Array
+(
+    [name] => amit
+    [birthdate] => 1990-01-01
+    [gender] => Male
+    [phone] => 1234567890
+    [city] => Mumbai
+)
+
+SESSION: Array
+(
+)
+
+POST: Array
+(
+    [name] => rr
+    [birthdate] => 1990-01-01
+    [gender] => Male
+    [phone] => 1234567890
+    [city] => Mumbai
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+SESSION: Array
+(
+)
+
+POST: Array
+(
+)
+
+SESSION: Array
+(
+)
+
+POST: Array
+(
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => xyz@gmail.com
+    [password] => 123456
+)
+
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+
+SESSION: Array
+(
+    [user_id] => 2
+)
+
+RAW OUTPUT:
+{"success":true}LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+
+SESSION: Array
+(
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 1111112
+)
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 1111112
+)
+LOGIN: Array
+(
+    [user_type] => student
+    [email] => heniihenij@gmail.com
+    [password] => 111111
+)
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+POST: Array
+(
+    [name] => rr
+    [birthdate] => 1990-01-01
+    [gender] => Male
+    [phone] => 1234567890
+    [city] => Mumbai
+)
+
+SESSION: Array
+(
+    [user_id] => 1
+)
+
+POST: Array
+(
+    [name] => -
+    [birthdate] => 1990-01-01
+    [gender] => Male
+    [phone] => 1234567890
+    [city] => Mumbai
+)
+
+SESSION: Array
+(
+)
+
+POST: Array
+(
+    [name] => henii
+    [birthdate] => 1990-01-01
+    [gender] => Male
+    [phone] => 1234567890
+    [city] => Mumbai
+)
+
+SESSION: Array
+(
+)
+
+POST: Array
+(
+    [name] => henii
+    [birthdate] => 1990-01-01
+    [gender] => Female
+    [phone] => 1234567890
+    [city] => Mumbai
+)
+
