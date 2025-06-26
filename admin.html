@@ -235,75 +235,47 @@
     </section>
 
     <!-- Events Management Section -->
-    <section id="events" class="py-20 bg-gray-50">
-        <div class="container mx-auto px-6">
-            <div class="flex justify-between items-center mb-8">
-                <div>
-                    <h2 class="text-3xl font-bold mb-2">Events Management</h2>
-                    <p class="text-gray-600">Create and manage campus events</p>
-                </div>
-                <button class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-all flex items-center gap-2">
-                    <i class="ri-add-line"></i>
-                    Create Event
-                </button>
-            </div>
+<section id="events" class="py-20 bg-gray-50">
+  <div class="container mx-auto px-6">
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h2 class="text-3xl font-bold mb-2">Events Management</h2>
+        <p class="text-gray-600">Create and manage campus events</p>
+      </div>
+      <button id="open-create-event" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-all flex items-center gap-2">
+        <i class="ri-add-line"></i>
+        Create Event
+      </button>
+    </div>
 
-            <!-- Event Type Tabs -->
-            <div class="flex justify-center mb-8">
-                <div class="inline-flex bg-gray-100 rounded-full p-1">
-                    <button class="event-type-tab px-6 py-2 rounded-full tab-active whitespace-nowrap" data-type="live">Live Events</button>
-                    <button class="event-type-tab px-6 py-2 rounded-full whitespace-nowrap" data-type="upcoming">Upcoming Events</button>
-                    <button class="event-type-tab px-6 py-2 rounded-full whitespace-nowrap" data-type="past">Past Events</button>
-                </div>
-            </div>
+    <!-- Event Type Tabs -->
+    <div class="flex justify-center mb-8">
+      <div class="inline-flex bg-gray-100 rounded-full p-1">
+        <button class="event-type-tab px-6 py-2 rounded-full tab-active whitespace-nowrap" data-type="live">Live Events</button>
+        <button class="event-type-tab px-6 py-2 rounded-full whitespace-nowrap" data-type="upcoming">Upcoming Events</button>
+        <button class="event-type-tab px-6 py-2 rounded-full whitespace-nowrap" data-type="past">Past Events</button>
+      </div>
+    </div>
 
-            <!-- Events Table -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <table class="w-full">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Event</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Participants</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        <tr>
-                            <td class="px-6 py-4">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-10 w-10">
-                                        <img class="h-10 w-10 rounded-lg object-cover" src="https://readdy.ai/api/search-image?query=tech%20workshop%20with%20students%20in%20a%20modern%20classroom%20setting&width=100&height=100&seq=event1" alt="Event">
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">Web Development Workshop</div>
-                                        <div class="text-sm text-gray-500">Tech Center</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <div class="text-sm text-gray-900">May 16, 2025</div>
-                                <div class="text-sm text-gray-500">10:00 AM - 2:00 PM</div>
-                            </td>
-                            <td class="px-6 py-4 text-sm text-gray-500">Tech Center Room 101</td>
-                            <td class="px-6 py-4 text-sm text-gray-500">24/50</td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Live</span>
-                            </td>
-                            <td class="px-6 py-4 text-sm font-medium">
-                                <button class="text-primary hover:text-primary-dark mr-3">Edit</button>
-                                <button class="text-red-600 hover:text-red-900">Delete</button>
-                            </td>
-                        </tr>
-                        <!-- Add more event rows as needed -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
+    <!-- Events Table -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <table class="w-full">
+  <thead class="bg-gray-50">
+    <tr>
+      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Event</th>
+      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Participants</th>
+      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+      <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+    </tr>
+  </thead>
+  <tbody id="events-table-body" class="divide-y divide-gray-200"></tbody>
+</table>
 
+    </div>
+  </div>
+</section>
     <!-- Users Management Section -->
     <section id="users" class="py-20">
         <div class="container mx-auto px-6">
@@ -889,14 +861,186 @@
                         image: document.getElementById('event-image').files[0]
                     };
 
-                    // Here you would typically send the data to your backend
-                    // For now, we'll just show a success message
-                    alert('Event created successfully!');
-                    
-                    // Reset form and close modal
-                    createEventForm.reset();
-                    createEventModal.classList.add('hidden');
+                   // Prepare FormData to send via POST
+const formData = new FormData();
+formData.append('title', eventData.title);
+formData.append('category', eventData.category);
+formData.append('description', eventData.description);
+formData.append('date', eventData.date);
+formData.append('time', eventData.time);
+formData.append('location', eventData.location);
+formData.append('capacity', eventData.capacity);
+formData.append('featured', eventData.featured); // true or false
+formData.append('image', eventData.image);
 
+// Send data to create_event.php using fetch
+fetch('http://localhost/api/create_event.php', {
+    method: 'POST',
+    body: formData
+})
+.then(response => response.json())
+.then(data => {
+    if (data.success) {
+        // Success notification
+        const notification = document.createElement('div');
+        notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform transition-transform duration-300 translate-y-0';
+        notification.textContent = 'Event created successfully!';
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.classList.add('translate-y-full');
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+
+        createEventForm.reset();
+        createEventModal.classList.add('hidden');
+    } else {
+        alert('Error: ' + data.message);
+    }
+})
+.catch(error => {
+    console.error('Error:', error);
+    alert('An unexpected error occurred');
+});
+
+
+const liveBody = document.getElementById("live-events-body");
+  const upcomingBody = document.getElementById("upcoming-events-body");
+  const pastBody = document.getElementById("past-events-body");
+
+ fetch("http://localhost/api/fetch_event.php")
+  .then(res => res.json())
+  .then(data => {
+    console.log("Fetched data:", data); // Add this line
+    if (data.success) {
+      renderEvents(data.data);
+    } else {
+      alert("Error loading events: " + data.message);
+    }
+  })
+  .catch(err => {
+    console.error("Fetch error:", err);
+  });
+
+  let allEvents = []; // Store all events
+let currentTab = 'live'; // Default tab
+
+function fetchAndRenderEvents() {
+  fetch("http://localhost/api/fetch_event.php")
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        allEvents = data.data;
+        renderEvents(currentTab); // Render current tab
+      } else {
+        alert("Error loading events: " + data.message);
+      }
+    })
+    .catch(err => {
+      console.error("Fetch error:", err);
+    });
+}
+
+function renderEvents(tabType) {
+  const tableBody = document.getElementById("events-table-body");
+  tableBody.innerHTML = '';
+
+  const now = new Date();
+
+  allEvents.forEach(event => {
+    const eventDateTime = new Date(`${event.date}T${event.time}`);
+    const isSameDate = event.date === now.toISOString().split("T")[0];
+    let status = '';
+
+    if (isSameDate) {
+      status = 'Live';
+    } else if (eventDateTime > now) {
+      status = 'Upcoming';
+    } else {
+      status = 'Past';
+    }
+
+    // Only show events matching the current tab
+    if ((tabType === 'live' && status === 'Live') ||
+        (tabType === 'upcoming' && status === 'Upcoming') ||
+        (tabType === 'past' && status === 'Past')) {
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td class="px-6 py-4">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 h-10 w-10">
+              <img class="h-10 w-10 rounded-lg object-cover" src="http://localhost/api/${event.image_path}" alt="${event.title}">
+            </div>
+            <div class="ml-4">
+              <div class="text-sm font-medium text-gray-900">${event.title}</div>
+              <div class="text-sm text-gray-500">${event.category}</div>
+            </div>
+          </div>
+        </td>
+        <td class="px-6 py-4">
+          <div class="text-sm text-gray-900">${formatDate(event.date)}</div>
+          <div class="text-sm text-gray-500">${event.time}</div>
+        </td>
+        <td class="px-6 py-4 text-sm text-gray-500">${event.location}</td>
+        <td class="px-6 py-4 text-sm text-gray-500">0/${event.capacity}</td>
+        <td class="px-6 py-4">
+          <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+            status === 'Live' ? 'bg-green-100 text-green-800' :
+            status === 'Upcoming' ? 'bg-blue-100 text-blue-800' :
+            'bg-gray-200 text-gray-800'
+          }">${status}</span>
+        </td>
+        <td class="px-6 py-4 text-sm font-medium">
+          <button class="text-primary hover:text-primary-dark mr-3">Edit</button>
+          <button class="text-red-600 hover:text-red-900">Delete</button>
+        </td>
+      `;
+      tableBody.appendChild(row);
+    }
+  });
+}
+
+function formatDate(dateStr) {
+  const options = { year: 'numeric', month: 'short', day: 'numeric' };
+  return new Date(dateStr).toLocaleDateString(undefined, options);
+}
+
+// Tab switching
+document.querySelectorAll('.event-type-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.event-type-tab').forEach(t => t.classList.remove('tab-active'));
+    tab.classList.add('tab-active');
+
+    currentTab = tab.getAttribute('data-type');
+    renderEvents(currentTab);
+  });
+});
+
+// Initial load
+document.addEventListener("DOMContentLoaded", fetchAndRenderEvents);
+
+  function formatDate(dateStr) {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateStr).toLocaleDateString(undefined, options);
+  }
+
+  // Tab switching
+  document.querySelectorAll('.event-type-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.event-type-tab').forEach(t => t.classList.remove('tab-active'));
+      tab.classList.add('tab-active');
+
+      const type = tab.getAttribute('data-type');
+      liveBody.classList.add('hidden');
+      upcomingBody.classList.add('hidden');
+      pastBody.classList.add('hidden');
+
+      if (type === 'live') liveBody.classList.remove('hidden');
+      else if (type === 'upcoming') upcomingBody.classList.remove('hidden');
+      else if (type === 'past') pastBody.classList.remove('hidden');
+    });
+  });
                     // Show success notification
                     const notification = document.createElement('div');
                     notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform transition-transform duration-300 translate-y-0';
