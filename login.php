@@ -9,6 +9,7 @@ $user_type = $_POST['user_type'] ?? '';
 $email = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
 
+
 if (empty($email) || empty($password)) {
     echo json_encode(['success' => false, 'message' => 'Email and password are required']);
     exit;
