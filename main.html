@@ -160,6 +160,7 @@
         }
     </style>
 </head>
+
 <body class="bg-white text-gray-800">
     <script>
         // Authentication check
@@ -311,11 +312,10 @@
                         <h3 class="text-xl font-semibold mb-2">Web Development Workshop</h3>
                         <p class="text-gray-600 mb-4 flex-grow">Learn the fundamentals of modern web development with hands-on exercises and expert guidance.</p>
                        <button class="join-btn bg-primary text-white px-4 py-2 mt-2 rounded" data-id="1">
-  Join Event
-</button>
-
+                        Join Event
+                    </button>
                     </div>
-                </div>
+                    </div>
                 <!-- Upcoming Event Card Example -->
                 <div class="event-card min-w-[300px] max-w-[300px] bg-white rounded-lg shadow-md overflow-hidden flex flex-col transition-transform hover:translate-y-[-5px]" data-type="upcoming">
                     <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80" alt="Spring Music Festival" class="h-40 w-full object-cover">
@@ -724,18 +724,123 @@
         </div>
     </footer>
 
-    <!-- Profile Modal -->
-    <div id="profile-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full relative">
-            <button id="close-profile-modal" class="absolute top-2 right-2 text-gray-400 hover:text-primary text-2xl">&times;</button>
-            <h2 class="text-2xl font-bold mb-4 text-primary text-center">Your Profile</h2>
-            <div class="flex flex-col gap-2">
-                <p><span class="font-semibold">Name:</span> <span id="modal-profile-name">-</span></p>
-                <p><span class="font-semibold">Email:</span> <span id="modal-profile-email">-</span></p>
-                <p><span class="font-semibold">User Type:</span> <span id="modal-profile-type">-</span></p>
-            </div>
-        </div>
+<!-- Profile Modal -->
+<div id="profile-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full relative">
+    <button id="close-profile-modal" class="absolute top-2 right-2 text-gray-400 hover:text-primary text-2xl">&times;</button>
+    <h2 class="text-2xl font-bold mb-4 text-primary text-center">Your Profile</h2>
+
+    <!-- Display Mode -->
+    <div id="profile-display" class="flex flex-col gap-2">
+      <p><span class="font-semibold">User Type:</span> <span id="modal-profile-type">Customer</span></p>
+      <p><span class="font-semibold">Name:</span> <span id="modal-profile-name">John Doe</span></p>
+      <p><span class="font-semibold">Email:</span> <span id="modal-profile-email">john@example.com</span></p>
+      <p><span class="font-semibold">Birthdate:</span> <span id="modal-profile-birthdate">1990-01-01</span></p>
+      <p><span class="font-semibold">Gender:</span> <span id="modal-profile-gender">Male</span></p>
+      <p><span class="font-semibold">Phone:</span> <span id="modal-profile-phone">1234567890</span></p>
+      <p><span class="font-semibold">City:</span> <span id="modal-profile-city">Mumbai</span></p>
     </div>
+
+    <!-- Edit Mode -->
+    <form id="edit-profile-form" class="flex flex-col gap-3 hidden mt-4">
+      <input type="text" name="name" placeholder="Name" class="border p-2 rounded" required />
+      <input type="date" name="birthdate" class="border p-2 rounded" />
+      <select name="gender" class="border p-2 rounded">
+        <option value="">Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+      <input type="tel" name="phone" placeholder="Phone Number" class="border p-2 rounded" />
+      <input type="text" name="city" placeholder="City" class="border p-2 rounded" />
+      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
+    </form>
+
+    <button id="edit-profile-btn" class="mt-4 text-blue-600 underline">Edit Profile</button>
+  </div>
+</div>
+
+<script>
+ 
+  const editBtn = document.getElementById('edit-profile-btn');
+  const displayDiv = document.getElementById('profile-display');
+  const form = document.getElementById('edit-profile-form');
+
+  // Show edit form and pre-fill fields
+  editBtn.addEventListener('click', () => {
+    displayDiv.classList.add('hidden');
+    form.classList.remove('hidden');
+
+    form.name.value = document.getElementById('modal-profile-name').textContent.trim();
+    form.birthdate.value = document.getElementById('modal-profile-birthdate').textContent.trim();
+    form.gender.value = document.getElementById('modal-profile-gender').textContent.trim();
+    form.phone.value = document.getElementById('modal-profile-phone').textContent.trim();
+    form.city.value = document.getElementById('modal-profile-city').textContent.trim();
+  });
+
+  // Close modal and reset view
+  document.getElementById('close-profile-modal').addEventListener('click', () => {
+    form.classList.add('hidden');
+    displayDiv.classList.remove('hidden');
+  });
+
+  // Submit updated profile to backend
+  form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+
+  fetch('http:// 192.168.31.14/api/update_profile.php', {
+  method: 'POST',
+  credentials: 'include', // crucial for sending session cookies
+  body: formData
+})
+
+    .then((res) => {
+      if (!res.ok) throw new Error('Network response was not ok');
+      return res.json();
+    })
+    .then((data) => {
+      if (data.success) {
+        alert('✅ Profile updated successfully!');
+
+        // Update the display without reloading
+        document.getElementById('modal-profile-name').textContent = form.name.value;
+        document.getElementById('modal-profile-birthdate').textContent = form.birthdate.value;
+        document.getElementById('modal-profile-gender').textContent = form.gender.value;
+        document.getElementById('modal-profile-phone').textContent = form.phone.value;
+        document.getElementById('modal-profile-city').textContent = form.city.value;
+
+        form.classList.add('hidden');
+        displayDiv.classList.remove('hidden');
+      } else {
+        alert(data.message || '❌ Failed to update profile.');
+      }
+    })
+    .catch((err) => {
+      console.error('Fetch error:', err);
+      alert('❌ An error occurred while updating profile.');
+    });
+});
+const formData = new FormData();
+formData.append("email", "test@example.com");
+formData.append("password", "123456");
+
+fetch("http:// 192.168.31.14/api/login.php", {
+  method: "POST",
+  body: formData,
+  credentials: "include", // Crucial for setting session cookie
+})
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      console.log("Logged in:", data.user);
+    } else {
+      alert(data.message);
+    }
+  });
+
+</script>
+
 
     <!-- Upload Resource Modal -->
     <div id="upload-resource-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
@@ -785,21 +890,20 @@
     </div>
 
     <script>
-        
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.join-btn').forEach(button => {
-    button.addEventListener('click', async () => {
-      const eventId = button.getAttribute('data-id');
-      const email = localStorage.getItem('userEmail');
+        document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.join-btn').forEach(button => {
+        button.addEventListener('click', async () => {
+        const eventId = button.getAttribute('data-id');
+        const email = localStorage.getItem('userEmail');
 
-      if (!email) {
-        alert("Please login to join events.");
-        window.location.href = 'index.html';
-        return;
-      }
+        if (!email) {
+            alert("Please login to join events.");
+            window.location.href = 'index.html';
+            return;
+        }
 
       try {
-        const response = await fetch('http://192.168.1.2/api/join_event.php', {
+        const response = await fetch('http:// 192.168.31.14/api/join_event.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: new URLSearchParams({ email, event_id: eventId })
@@ -823,7 +927,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
-
         document.addEventListener('DOMContentLoaded', function() {
             // Authentication check
             const isLoggedIn = localStorage.getItem('isLoggedIn');
